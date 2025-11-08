@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM Happiness Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+        }
+
+        /* Section Wrapper */
+        .map-section {
+            padding: 60px 20px;
+            background-color: #ffffff;
+            text-align: center;
+        }
+
+        .map-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .map-description {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* Responsive iframe container */
+        .map-container {
+            width: 95%;
+            max-width: 1200px;
+            height: 650px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+        }
+
+        .map-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ✅ Map Section -->
+    <section class="map-section">
+        <h2 class="map-title">Texas Customer Happiness Map</h2>
+        <p class="map-description">
+            Explore customer experience scores across Texas counties. 
+            Hover to see details for each area.
+        </p>
+
+        <div class="map-container">
+            <!-- ✅ Embed Folium Map -->
+            <iframe class="map-frame"
+                src="texas_county_happiness_map.html"></iframe>
+        </div>
+    </section>
+
+</body>
+</html>
