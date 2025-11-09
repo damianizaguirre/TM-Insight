@@ -7,7 +7,7 @@ body, html {
     width: 100vw;
     background-color: #f0f2f5; /* Light grey background */
     box-sizing: border-box;
-    overflow: hidden; /* <-- ADDED: Prevents all scrolling */
+    overflow: hidden; /* Prevents all scrolling */
 }
 
 /* Helper class to show the outlines of all rectangles */
@@ -24,7 +24,7 @@ body, html {
     height: 100%;
     padding: 20px; /* Outer padding */
     gap: 20px; /* Space between sidebar and main content */
-    box-sizing: border-box; /* <-- ADDED: Includes padding in the 100% height */
+    box-sizing: border-box;
 }
 
 /* ----- 2. Sidebar (Left Column) ----- */
@@ -98,11 +98,32 @@ body, html {
     gap: 20px;
 }
 
+/* Map container */
 .map-container {
     flex-grow: 1; /* Takes most of the space in this column */
     min-height: 300px;
+    display: flex;
+    flex-direction: column;
 }
 
+/* Map title above iframe */
+.map-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Embed Folium map inside the map container */
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;      /* remove outline */
+    border-radius: 0;  /* sharp edges */
+}
+
+/* Volume container (below map) */
 .volume-container {
     flex-basis: 180px; /* Fixed height */
     flex-shrink: 0;
