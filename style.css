@@ -53,6 +53,7 @@ body, html {
     cursor: pointer;
     transition: 0.2s ease;
     color: #333;
+    text-decoration: none; /* Fixes the underline */
 }
 
 .nav-item:hover {
@@ -102,7 +103,7 @@ body, html {
 
 /* LEFT COLUMN */
 .content-column-left {
-    flex-grow: 2;
+    flex-grow: 3; 
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -110,7 +111,8 @@ body, html {
 
 /* ✅ MAP SECTION */
 .map-container {
-    flex-grow: 1;
+    /* flex-grow: 1; */    /* Removed to allow fixed height */
+    height: 400px;      /* Set to fixed height */
     background: #ffffff;
     border-radius: 14px;
     padding: 18px;
@@ -132,7 +134,7 @@ body, html {
     border-radius: 10px;
 }
 
-/* ✅ VOLUME BOXES */
+/* ✅ VOLUME BOXES (FOR HOME PAGE) */
 .volume-container {
     height: 180px;
     background: white;
@@ -141,7 +143,7 @@ body, html {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    box-shadow: 0 4px 10px rgba(0,0,m0,0.06);
 }
 
 .volume-title {
@@ -168,7 +170,7 @@ body, html {
     gap: 20px;
 }
 
-/* ✅ LOOKUP CARD */
+/* ✅ LOOKUP CARD (FOR HOME & NETWORK) */
 .lookup-card {
     background: white;
     border-radius: 14px;
@@ -184,22 +186,22 @@ body, html {
     font-weight: bold;
 }
 
-/* ▼▼ ADDED WRAPPER RULE ▼▼ */
+/* (FOR DROPDOWN FIX) */
 .lookup-wrapper {
     position: relative;
 }
 
-/* ▼▼ MODIFIED SEARCH INPUT RULE ▼▼ */
+/* (FOR DROPDOWN FIX) */
 #county-search {
     padding: 12px;
     font-size: 1rem;
     border: 1.5px solid #bbb;
     border-radius: 8px;
     width: 100%;
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    box-sizing: border-box;
 }
 
-/* ▼▼ MODIFIED DROPDOWN RULE ▼▼ */
+/* (FOR DROPDOWN FIX) */
 .dropdown-list {
     display: none;
     background: white;
@@ -207,10 +209,8 @@ body, html {
     overflow-y: auto;
     border: 1px solid #ccc;
     border-radius: 8px;
-    position: absolute;  /* <-- Changed */
+    position: absolute;
     z-index: 9999;
-    
-    /* Added for positioning */
     top: 100%;
     left: 0;
     right: 0;
@@ -244,4 +244,49 @@ body, html {
 #lookup-error {
     color: red;
     height: 16px;
+}
+
+/* (FOR VERTICAL FILL) */
+.flex-grow-card {
+    flex-grow: 1;
+}
+
+/* NEW RULES FOR NETWORK PAGE */
+
+/* Placeholder styling for issue list */
+.issue-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.issue-list li {
+    background: #f4f4f7;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+/* Placeholder for all towers list */
+.tower-list {
+    flex-grow: 1;
+    overflow-y: auto; /* Adds scrolling if list is long */
+}
+
+/* (FOR HALF-WIDTH CARD) */
+.half-width-card {
+    width: 50%;
+    box-sizing: border-box;
+    flex-grow: 0;         /* <-- Change this from 1 to 0 */
+    height: 200px;        /* <-- Add this line (adjust 300px as needed) */
+}
+
+/* ▼▼ NEW RULE FOR CUSTOM HEIGHT "ALL TOWERS" CARD ▼▼ */
+.all-towers-card {
+    height: 100px; /* <-- ADJUST THIS VALUE AS NEEDED */
+    display: flex;
+    flex-direction: column;
 }
