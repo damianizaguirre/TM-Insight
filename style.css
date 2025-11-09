@@ -2,7 +2,7 @@
 body, html {
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Common system font */
     height: 100vh;
     width: 100vw;
     background-color: #f0f2f5; /* Light grey background */
@@ -10,9 +10,9 @@ body, html {
     overflow: hidden; /* Prevents all scrolling */
 }
 
-/* Helper class to show the outlines of all rectangles */
+/* Helper class to show the outlines of all OTHER rectangles */
 .rect {
-    border: 2px dashed #999;
+    border: 2px solid black;
     background-color: rgba(0, 0, 0, 0.02);
     border-radius: 8px; /* Rounded corners like in the design */
     box-sizing: border-box; /* Include padding/border in width/height */
@@ -27,19 +27,39 @@ body, html {
     box-sizing: border-box;
 }
 
-/* ----- 2. Sidebar (Left Column) ----- */
+/* ----- 2. Sidebar (Left Column) - FINAL ----- */
 .sidebar {
-    flex-basis: 220px; /* Fixed width for the sidebar */
+    flex-basis: 220px; /* Widened to fit text */
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 15px;
+    padding: 20px 15px; /* Added a bit more top padding */
+    
+    /* Final styles from screenshot */
+    background-color: #FFFFFF;
+    border: 2px solid #E20074; /* T-Mobile Magenta */
+    border-radius: 12px; /* Slightly more rounded */
+    box-sizing: border-box;
 }
 
 .sidebar-logo {
-    height: 50px;
+    height: auto; /* Let content define height */
     flex-shrink: 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    padding-left: 10px;
+    
+    /* Aligns image and text */
+    display: flex;        
+    align-items: center;  
+}
+
+.logo-image {
+    height: 1.8rem;  /* Matches the font size */
+    width: auto;     /* Maintains aspect ratio */
+    margin-right: 4px; /* Space between logo and "Insights" */
 }
 
 .sidebar-nav {
@@ -50,7 +70,17 @@ body, html {
 }
 
 .nav-item {
-    height: 45px;
+    height: auto; /* Let content define height */
+    font-size: 1.3rem;
+    color: #333;
+    padding: 12px 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease; /* Smooth hover */
+}
+
+.nav-item:hover {
+    background-color: #f0f2f5; /* Light grey on hover */
+    cursor: pointer;
 }
 
 /* ----- 3. Main Content (Right Column) ----- */
@@ -104,6 +134,7 @@ body, html {
     min-height: 300px;
     display: flex;
     flex-direction: column;
+    padding: 20px; /* Added padding to match other cards */
 }
 
 /* Map title above iframe */
@@ -120,7 +151,7 @@ body, html {
     width: 100%;
     height: 100%;
     border: none;      /* remove outline */
-    border-radius: 0;  /* sharp edges */
+    border-radius: 8px;  /* Rounded corners for the iframe */
 }
 
 /* Volume container (below map) */
