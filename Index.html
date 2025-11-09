@@ -4,9 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            margin: 0; /* Remove default margin */
+            display: flex; /* Use flexbox for layout */
+        }
+        .rectangle {
+            width: 191px;
+            height: 849px;
+            flex-shrink: 0;
+            background-color: #ccc; /* Optional: Add a background color to make it visible */
+        }
+        .rectangle-right {
+            width: 737px;
+            height: 445px;
+            flex-shrink: 0;
+            border-radius: 20px;
+            border: 1.5px solid #F5ABD1;
+            background: url(<path-to-image>) lightgray -13.449px 0px / 101.825% 100% no-repeat;
+        }
+        .right-small-container {
+            display: flex;
+            flex-direction: column; /* Stack the small rectangles vertically */
+            gap: 10px; /* Optional: Add spacing between the rectangles */
+        }
+        .rectangle-right-small {
+            width: 362px;
+            height: 159px;
+            flex-shrink: 0;
+            border-radius: 20px;
+            border: 1.5px solid #858585;
+            background: #FFF;
+        }
+        .rectangle-right-small-below {
+            width: 362px;
+            height: 271px;
+            flex-shrink: 0;
+            border-radius: 20px;
+            border: 1.5px solid #858585;
+            background: #FFF;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to TM-Insight</h1>
-    <p>Gathering user insights to provide a solution.</p>
+    <div class="rectangle"></div>
+    <div class="rectangle-right"></div>
+    <div class="right-small-container">
+        <div class="rectangle-right-small"></div>
+        <div class="rectangle-right-small-below"></div>
+    </div>
 </body>
 </html>
