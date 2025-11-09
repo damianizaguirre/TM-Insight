@@ -6,10 +6,6 @@ import csv
 import numpy as np
 from sklearn.cluster import KMeans
 
-# ----------------------------
-# Configuration
-# ----------------------------
-
 # Reddit API Setup
 reddit = praw.Reddit(
     client_id="aZA0e20-zSJGOoYHCt5bMw",
@@ -55,10 +51,8 @@ TEXAS_COUNTIES = [
     "Wood","Yoakum","Young","Zapata","Zavala", "Unknown"
 ]
 
-# ----------------------------
-# Functions
-# ----------------------------
 
+# Functions:
 def extract_relevant_sentences(text):
     sentences = re.split(r'[.!?]\s+', text)
     relevant = []
@@ -135,18 +129,14 @@ def generate_ai_solution_openrouter(county_name, cluster_label, weighted_sentime
         print(f"Error generating AI solution for {county_name}: {e}")
         return "No recommendation available."
 
-# ----------------------------
-# Main
-# ----------------------------
-
 def main():
-    # 1. Fetch Reddit posts
+    #Fetch Reddit posts
     subreddit_name = "tmobile"
     query = "Texas T-Mobile"
     limit = 50
     posts = reddit.subreddit(subreddit_name).search(query, limit=limit, sort="new")
 
-    # 2. Gather feedback by county
+    #Gather feedback by county
     county_feedback: dict[str, list[dict]] = {}
     for post in posts:
         text = post.title + " " + (post.selftext or "")
@@ -155,7 +145,7 @@ def main():
         sentiment = result["sentiment"]
         county_feedback.setdefault(county, []).append({"text": text, "sentiment": sentiment})
 
-    # 3. Compute county happiness
+    #Compute county happiness
     county_results = []
     statewide_happiness_scores = []
 
@@ -190,7 +180,7 @@ def main():
         })
         statewide_happiness_scores.append(H)
 
-    # 4. Clustering
+    # Clustering
     X = np.array([[c["WeightedSentiment"], c["WeightedNetwork"], c["WeightedFeedback"]] for c in county_results])
     kmeans = KMeans(n_clusters=4, random_state=42)
     labels = kmeans.fit_predict(X)
@@ -218,7 +208,7 @@ def main():
             happiness_score=H
         )
 
-    # 5. Save CSV
+    # Save as CSV
     csv_file = "county_happiness_with_reddit_feedback_normalized.csv"
     with open(csv_file, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=[

@@ -2,10 +2,9 @@ import csv
 import numpy as np
 import matplotlib.pyplot as plt
 
-# ----------------------------
-# Step 1: Load CSV data
-# ----------------------------
-filename = "county_happiness_with_reddit_feedback_normalized.csv"  # replace with your path
+
+#Load CSV data
+filename = "county_happiness_with_reddit_feedback_normalized.csv" 
 data = []
 
 with open(filename, "r", encoding="utf-8") as f:
@@ -27,9 +26,7 @@ with open(filename, "r", encoding="utf-8") as f:
 if not data:
     raise ValueError("No valid rows found in CSV.")
 
-# ----------------------------
-# Step 2: Visualization
-# ----------------------------
+# Visualization
 plt.figure(figsize=(12, 8))
 colors = ["#e74c3c", "#2ecc71", "#3498db", "#f1c40f"]  # up to 4 clusters
 
@@ -48,7 +45,7 @@ for cluster in unique_clusters:
 
     plt.scatter(x, y, s=sizes, color=colors[cluster % len(colors)], alpha=0.6, label=cluster_label)
     
-    # annotate counties
+    # Annotate counties
     for i, name in enumerate(labels_):
         plt.text(x[i] + 0.5, y[i] + 0.5, name, fontsize=8)
 
