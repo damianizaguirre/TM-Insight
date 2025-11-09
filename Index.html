@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+<link rel="stylesheet" href="https://unpkg.com/lucide-static@latest/font/lucide.css">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device=device-width, initial-scale=1.0">
     <title>TInsights Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -10,49 +12,80 @@
 
     <div class="dashboard-container">
 
+        <!-- ✅ Modern Sidebar -->
         <nav class="sidebar">
             <div class="sidebar-logo">
                 <span class="logo-t">T</span>Insights
             </div>
 
             <div class="sidebar-nav">
-                <a href="Index.html" class="nav-item active">Home</a>
-                <a href="#" class="nav-item">Sentiment</a> <a href="network.html" class="nav-item">Network</a>
-                <a href="#" class="nav-item">Volume</a> </div>
-            </nav>
+                <div class="nav-item active"><i class="lucide lucide-home"></i> Home</div>
+                <div class="nav-item"><i class="lucide lucide-smile"></i> Sentiment</div>
+                <div class="nav-item"><i class="lucide lucide-share-2"></i> Network</div>
+                <div class="nav-item"><i class="lucide lucide-pie-chart"></i> Volume</div>
 
+            </div>
+        </nav>
+
+        <!-- ✅ Main Content -->
         <main class="main-content">
 
+            <!-- Header -->
             <header class="main-header">
                 <div class="greeting">Welcome back, User</div>
                 <div class="avatar"></div>
             </header>
 
+            <!-- Content Body -->
             <div class="content-body">
 
+                <!-- LEFT COLUMN -->
                 <div class="content-column-left">
 
-                    <div class="map-container">
-                        <div class="map-title">Texas Customer Happiness Map</div>
+                    <!-- MAP SECTION -->
+                   <div class="map-container">
+                        <div class="map-title">
+                            <i class="lucide lucide-map"></i> Texas Customer Happiness Map
+                        </div>
+                        <div class="map-subtitle">Darker magenta indicates higher customer happiness.</div>
                         <iframe src="texas_county_happiness_map.html"></iframe>
                     </div>
 
-                    <div class="volume-container">
-                       <div class="volume-title">Volume Metrics</div>
-                       <div class="volume-cards">
-                         <div class="volume-card"></div>
-                         <div class="volume-card"></div>
-                         <div class="volume-card"></div>
-                       </div>
+
+
+                    <!-- Volume Cards -->
+                                <div class="volume-container">
+
+                   <div class="volume-title">
+                        <i class="lucide lucide-gauge"></i> Volume Metrics
                     </div>
+
+
+                    <div class="volume-label" style="text-align:center; font-size:1.05rem; font-weight:500; color:#333;">
+                        Statewide Average Happiness
+                    </div>
+
+                    <div class="volume-cards" style="justify-content:center; align-items:center;">
+                        <canvas id="avgHappinessChart" width="170" height="170"></canvas>
+                    </div>
+
+                    <div class="volume-caption" style="text-align:center; font-size:0.9rem; color:#555; margin-top:6px;">
+                        Across all measured Texas counties
+                    </div>
+
                 </div>
 
+                </div>
+
+                <!-- RIGHT COLUMN -->
                 <div class="content-column-right">
 
+                    <!-- ✅ County Lookup Card -->
                     <div class="lookup-card side-card">
-                        <h2 class="lookup-title">County Lookup</h2>
+                       <h2 class="lookup-title"><i class="lucide lucide-search"></i> County Lookup</h2>
+                        <p class="lookup-subtitle">Search any Texas county to view sentiment and recommendations</p>
 
-                        <div class="lookup-wrapper">
+                        <div class="lookup-input-wrapper">
                             <input 
                                 type="text"
                                 id="county-search"
@@ -62,20 +95,44 @@
                             <div id="county-dropdown" class="dropdown-list"></div>
                         </div>
 
+
+
                         <button id="lookup-btn">View Details</button>
                         <p id="lookup-error"></p>
                     </div>
 
-                    <div class="side-card lookup-card flex-grow-card">
-                         <h2 class="lookup-title">County Details</h2>
-                         <p>Select a county to see its details.</p>
+                   
+                    <div class="highlight-card side-card">
+                        <h2 class="highlight-title">County Highlights</h2>
+                        <p class="highlight-subtitle">Top 5 happiest and lowest scoring counties</p>
+
+                        <div class="highlight-lists">
+
+                            <div class="highlight-section">
+                                <h3 class="highlight-header">Highest Happiness</h3>
+                                <ul id="top-five" class="highlight-list"></ul>
+                            </div>
+
+                            <div class="highlight-section">
+                                <h3 class="highlight-header">Lowest Happiness</h3>
+                                <ul id="bottom-five" class="highlight-list"></ul>
+                            </div>
+
+                        </div>
                     </div>
+
+
+
+
+
+                    <div class="side-card"></div>
                 </div>
 
             </div>
         </main>
     </div>
 
+<!-- ✅ County Lookup Script -->
 <script>
 // List of all Texas counties
 const counties = [
@@ -167,6 +224,102 @@ document.getElementById("lookup-btn").addEventListener("click", function () {
     window.location.href = "county.html?county=" + encodeURIComponent(county);
 });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Load New CSV → Compute Avg → Draw Chart with Center Text
+fetch("county_happiness_with_reddit_feedback_normalized.csv")
+    .then(response => response.text())
+    .then(csv => {
+        const rows = csv.trim().split("\n").slice(1); // skip header
+
+        // Take the 4th column (HappinessScore)
+        const scores = rows.map(row => {
+            let parts = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g).map(p => p.replace(/^"|"$/g, "").trim());
+
+            return parseFloat(parts[4].trim()); // index 4 = HappinessScore
+
+        });
+
+        const avg = scores.reduce((a,b) => a+b, 0) / scores.length;
+        const valueLabel = Math.round(avg).toString();
+
+        const ctx = document.getElementById("avgHappinessChart").getContext("2d");
+
+        const centerTextPlugin = {
+            id: 'centerText',
+            afterDraw(chart) {
+                const {ctx, chartArea: {width, height}} = chart;
+                ctx.save();
+                ctx.font = "bold 26px sans-serif";
+                ctx.fillStyle = "#333";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(valueLabel, width / 2, height / 2);
+            }
+        };
+
+        new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                datasets: [{
+                    data: [avg, 100 - avg],
+                    backgroundColor: ["#E20074", "#ececf0"], // T-Mobile colors 🔥
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                cutout: "72%",
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                }
+            },
+            plugins: [centerTextPlugin]
+        });
+    });
+</script>
+
+<script>
+fetch("county_happiness_with_reddit_feedback_normalized.csv")
+    .then(response => response.text())
+    .then(csv => {
+        const rows = csv.trim().split("\n").slice(1);
+        const counties = rows.map(row => {
+            const parts = row.split(",", 5);
+            return { name: parts[0].trim(), score: parseFloat(parts[4].trim()) };
+        });
+
+        // Sort counties by score
+        const sorted = counties.sort((a,b) => b.score - a.score);
+
+        const topFive = sorted.slice(0, 5);
+        const bottomFive = sorted.slice(-5).reverse();
+
+        // Populate UI
+        const topList = document.getElementById("top-five");
+        const bottomList = document.getElementById("bottom-five");
+
+        topFive.forEach(c => {
+            const li = document.createElement("li");
+            li.textContent = `${c.name} (${c.score.toFixed(2)})`;
+            topList.appendChild(li);
+        });
+
+        bottomFive.forEach(c => {
+            const li = document.createElement("li");
+            li.textContent = `${c.name} (${c.score.toFixed(2)})`;
+            bottomList.appendChild(li);
+        });
+
+    });
+</script>
+
+
+
+
+
 
 </body>
 </html>
