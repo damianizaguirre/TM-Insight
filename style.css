@@ -184,15 +184,22 @@ body, html {
     font-weight: bold;
 }
 
-/* SEARCH INPUT */
+/* ▼▼ ADDED WRAPPER RULE ▼▼ */
+.lookup-wrapper {
+    position: relative;
+}
+
+/* ▼▼ MODIFIED SEARCH INPUT RULE ▼▼ */
 #county-search {
     padding: 12px;
     font-size: 1rem;
     border: 1.5px solid #bbb;
     border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
 }
 
-/* DROPDOWN */
+/* ▼▼ MODIFIED DROPDOWN RULE ▼▼ */
 .dropdown-list {
     display: none;
     background: white;
@@ -200,9 +207,14 @@ body, html {
     overflow-y: auto;
     border: 1px solid #ccc;
     border-radius: 8px;
-    margin-top: -6px;
-    position: relative;
+    position: absolute;  /* <-- Changed */
     z-index: 9999;
+    
+    /* Added for positioning */
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px; 
 }
 
 .dropdown-item {

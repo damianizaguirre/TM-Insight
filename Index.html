@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TInsights Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -10,7 +10,6 @@
 
     <div class="dashboard-container">
 
-        <!-- ✅ Modern Sidebar -->
         <nav class="sidebar">
             <div class="sidebar-logo">
                 <span class="logo-t">T</span>Insights
@@ -24,28 +23,22 @@
             </div>
         </nav>
 
-        <!-- ✅ Main Content -->
         <main class="main-content">
 
-            <!-- Header -->
             <header class="main-header">
                 <div class="greeting">Welcome back, User</div>
                 <div class="avatar"></div>
             </header>
 
-            <!-- Content Body -->
             <div class="content-body">
 
-                <!-- LEFT COLUMN -->
                 <div class="content-column-left">
 
-                    <!-- MAP SECTION -->
                     <div class="map-container">
                         <div class="map-title">Texas Customer Happiness Map</div>
                         <iframe src="texas_county_happiness_map.html"></iframe>
                     </div>
 
-                    <!-- Volume Cards -->
                     <div class="volume-container">
                        <div class="volume-title">Volume Metrics</div>
                        <div class="volume-cards">
@@ -56,22 +49,20 @@
                     </div>
                 </div>
 
-                <!-- RIGHT COLUMN -->
                 <div class="content-column-right">
 
-                    <!-- ✅ County Lookup Card -->
                     <div class="lookup-card side-card">
                         <h2 class="lookup-title">County Lookup</h2>
-
-                        <input 
-                            type="text"
-                            id="county-search"
-                            placeholder="Search county..."
-                            autocomplete="off"
-                        >
-
-                        <div id="county-dropdown" class="dropdown-list"></div>
-
+                        
+                        <div class="lookup-wrapper">
+                            <input 
+                                type="text"
+                                id="county-search"
+                                placeholder="Search county..."
+                                autocomplete="off"
+                            >
+                            <div id="county-dropdown" class="dropdown-list"></div>
+                        </div>
                         <button id="lookup-btn">View Details</button>
                         <p id="lookup-error"></p>
                     </div>
@@ -83,7 +74,6 @@
         </main>
     </div>
 
-<!-- ✅ County Lookup Script -->
 <script>
 // List of all Texas counties
 const counties = [
@@ -125,6 +115,7 @@ const counties = [
     "Shackelford County","Shelby County","Sherman County","Smith County","Somervell County","Starr County",
     "Stephens County","Sterling County","Stonewall County","Sutton County","Swisher County","Tarrant County",
     "Taylor County","Terrell County","Terry County","Throckmorton County","Titus County","Tom Green County",
+
     "Travis County","Trinity County","Tyler County","Upshur County","Upton County","Uvalde County",
     "Val Verde County","Van Zandt County","Victoria County","Walker County","Waller County","Ward County",
     "Washington County","Webb County","Wharton County","Wheeler County","Wichita County","Wilbarger County",
