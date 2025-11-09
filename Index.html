@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-device-width, initial-scale=1.0">
     <title>TInsights Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -16,12 +16,10 @@
             </div>
 
             <div class="sidebar-nav">
-                <div class="nav-item active">Home</div>
-                <div class="nav-item">Sentiment</div>
-                <div class="nav-item">Network</div>
-                <div class="nav-item">Volume</div>
-            </div>
-        </nav>
+                <a href="Index.html" class="nav-item active">Home</a>
+                <a href="#" class="nav-item">Sentiment</a> <a href="network.html" class="nav-item">Network</a>
+                <a href="#" class="nav-item">Volume</a> </div>
+            </nav>
 
         <main class="main-content">
 
@@ -53,7 +51,7 @@
 
                     <div class="lookup-card side-card">
                         <h2 class="lookup-title">County Lookup</h2>
-                        
+
                         <div class="lookup-wrapper">
                             <input 
                                 type="text"
@@ -63,11 +61,15 @@
                             >
                             <div id="county-dropdown" class="dropdown-list"></div>
                         </div>
+
                         <button id="lookup-btn">View Details</button>
                         <p id="lookup-error"></p>
                     </div>
 
-                    <div class="side-card"></div>
+                    <div class="side-card lookup-card flex-grow-card">
+                         <h2 class="lookup-title">County Details</h2>
+                         <p>Select a county to see its details.</p>
+                    </div>
                 </div>
 
             </div>
@@ -115,7 +117,6 @@ const counties = [
     "Shackelford County","Shelby County","Sherman County","Smith County","Somervell County","Starr County",
     "Stephens County","Sterling County","Stonewall County","Sutton County","Swisher County","Tarrant County",
     "Taylor County","Terrell County","Terry County","Throckmorton County","Titus County","Tom Green County",
-
     "Travis County","Trinity County","Tyler County","Upshur County","Upton County","Uvalde County",
     "Val Verde County","Van Zandt County","Victoria County","Walker County","Waller County","Ward County",
     "Washington County","Webb County","Wharton County","Wheeler County","Wichita County","Wilbarger County",
