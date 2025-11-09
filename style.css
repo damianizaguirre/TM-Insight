@@ -7,17 +7,18 @@ body, html {
     width: 100vw;
     background-color: #f4f4f7;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .dashboard-container {
     display: flex;
-    height: 100%;
+    min-height: 100%;
     padding: 20px;
     gap: 20px;
 }
 
-/* ✅ MODERN SOFT-GRAY SIDEBAR */
+/* SIDEBAR */
 .sidebar {
     flex-basis: 240px;
     background: #ffffff;
@@ -36,10 +37,9 @@ body, html {
 }
 
 .logo-t {
-    color: #E20074; /* Magenta Accent */
+    color: #E20074;
 }
 
-/* NAVIGATION */
 .sidebar-nav {
     display: flex;
     flex-direction: column;
@@ -53,7 +53,6 @@ body, html {
     cursor: pointer;
     transition: 0.2s ease;
     color: #333;
-    text-decoration: none; /* Fixes the underline */
 }
 
 .nav-item:hover {
@@ -74,7 +73,6 @@ body, html {
     gap: 20px;
 }
 
-/* HEADER */
 .main-header {
     height: 70px;
     display: flex;
@@ -103,16 +101,16 @@ body, html {
 
 /* LEFT COLUMN */
 .content-column-left {
-    flex-grow: 3; 
+    flex: 2;
+    min-width: 0; /* allows iframe to scale properly */
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* ✅ MAP SECTION */
+/* MAP CONTAINER */
 .map-container {
-    /* flex-grow: 1; */    /* Removed to allow fixed height */
-    height: 400px;      /* Set to fixed height */
+    height: 450px;
     background: #ffffff;
     border-radius: 14px;
     padding: 18px;
@@ -128,22 +126,25 @@ body, html {
 }
 
 .map-container iframe {
+    flex-grow: 1;      /* expand to fill container minus title + subtitle */
     width: 100%;
-    height: 100%;
+    height: 100%;      /* <-- this restores the original map size */
     border: none;
     border-radius: 10px;
 }
 
-/* ✅ VOLUME BOXES (FOR HOME PAGE) */
+
+
+/* VOLUME METRICS */
 .volume-container {
-    height: 180px;
+    min-height: 230px;
     background: white;
     border-radius: 14px;
     padding: 18px;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,m0,0.06);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
 }
 
 .volume-title {
@@ -153,24 +154,33 @@ body, html {
 
 .volume-cards {
     display: flex;
-    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
 }
 
-.volume-card {
-    flex-grow: 1;
-    background: #ececf0;
-    border-radius: 10px;
+#avgHappinessChart {
+    display: block;
+    margin: auto;
+}
+
+.volume-caption {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 6px;
 }
 
 /* RIGHT COLUMN */
 .content-column-right {
-    flex-grow: 1;
+    flex: 1;
+    max-width: 360px; /* keeps lookup sidebar from stretching */
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* ✅ LOOKUP CARD (FOR HOME & NETWORK) */
+/* LOOKUP CARD */
 .lookup-card {
     background: white;
     border-radius: 14px;
@@ -179,6 +189,7 @@ body, html {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: relative;
 }
 
 .lookup-title {
@@ -186,35 +197,36 @@ body, html {
     font-weight: bold;
 }
 
-/* (FOR DROPDOWN FIX) */
-.lookup-wrapper {
+/* SEARCH INPUT + WRAPPER */
+.lookup-input-wrapper {
+    width: 100%;
     position: relative;
+    margin-bottom: 8px;
 }
 
-/* (FOR DROPDOWN FIX) */
 #county-search {
+    width: 100%;
     padding: 12px;
     font-size: 1rem;
     border: 1.5px solid #bbb;
     border-radius: 8px;
-    width: 100%;
     box-sizing: border-box;
 }
 
-/* (FOR DROPDOWN FIX) */
+/* DROPDOWN LIST */
 .dropdown-list {
-    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
     background: white;
-    max-height: 150px;
-    overflow-y: auto;
     border: 1px solid #ccc;
     border-radius: 8px;
-    position: absolute;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    max-height: 160px;
+    overflow-y: auto;
     z-index: 9999;
-    top: 100%;
-    left: 0;
-    right: 0;
-    margin-top: 4px; 
+    display: none;
 }
 
 .dropdown-item {
@@ -246,47 +258,167 @@ body, html {
     height: 16px;
 }
 
-/* (FOR VERTICAL FILL) */
-.flex-grow-card {
-    flex-grow: 1;
+/* Map Subtitle */
+.map-subtitle {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #666;
+    margin-top: -4px;
+    margin-bottom: 10px;
 }
 
-/* NEW RULES FOR NETWORK PAGE */
+/* Lookup Helper Text */
+.lookup-subtitle {
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: -3px;
+    margin-bottom: -6px;
+}
 
-/* Placeholder styling for issue list */
-.issue-list {
-    list-style-type: none;
+.nav-item i {
+    margin-right: 10px;
+    font-size: 1.25rem;
+    vertical-align: middle;
+}
+
+.nav-item.active i {
+    color: white; /* icon turns white when selected */
+}
+
+.nav-item:hover i {
+    color: #E20074; /* icon gets pink on hover */
+}
+
+.nav-item i {
+    transition: transform .2s ease;
+}
+
+.nav-item:hover i {
+    transform: scale(1.18);
+}
+
+.highlight-card {
+    background: white;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.highlight-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.highlight-subtitle {
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: -6px;
+}
+
+.highlight-lists {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.highlight-section {
+    flex: 1;
+}
+
+.highlight-header {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.highlight-list {
+    list-style: none;
     padding-left: 0;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
 }
 
-.issue-list li {
-    background: #f4f4f7;
-    padding: 10px;
-    border-radius: 6px;
+.highlight-list li {
+    padding: 6px 0;
     font-size: 0.95rem;
+    color: #444;
+    border-bottom: 1px solid #eee;
 }
 
-/* Placeholder for all towers list */
-.tower-list {
-    flex-grow: 1;
-    overflow-y: auto; /* Adds scrolling if list is long */
+.county-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
 }
 
-/* (FOR HALF-WIDTH CARD) */
-.half-width-card {
-    width: 50%;
-    box-sizing: border-box;
-    flex-grow: 0;         /* <-- Change this from 1 to 0 */
-    height: 200px;        /* <-- Add this line (adjust 300px as needed) */
+.county-score-card {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    background: white;
+    padding: 18px;
+    border-radius: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    margin-top: 20px;
 }
 
-/* ▼▼ NEW RULE FOR CUSTOM HEIGHT "ALL TOWERS" CARD ▼▼ */
-.all-towers-card {
-    height: 100px; /* <-- ADJUST THIS VALUE AS NEEDED */
+.score-item {
     display: flex;
     flex-direction: column;
+    font-size: 1rem;
 }
+
+.score-item label {
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.score-item span {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.score-item.highlight span {
+    color: #E20074;
+}
+
+.cluster-box {
+    margin-top: 20px;
+    padding: 14px;
+    background: #E20074;
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.recommendation-box {
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+
+.recommendation-box h2 {
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+}
+
+.recommendation-box p {
+    line-height: 1.55;
+    font-size: 1.05rem;
+    color: #444;
+}
+
+.cluster-box.low { background:#d9534f; }
+.cluster-box.moderate { background:#f0ad4e; }
+.cluster-box.positive { background:#5bc0de; }
+.cluster-box.excellent { background:#5cb85c; }
+
+
