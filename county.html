@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>County Details</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <span class="logo-t">T</span>Insights
+        </div>
+
+        <div class="sidebar-nav">
+            <div class="nav-item" onclick="window.location.href='mapPage.html'">Home</div>
+            <div class="nav-item">Sentiment</div>
+            <div class="nav-item">Network</div>
+            <div class="nav-item">Volume</div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <header class="main-header">
+            <div class="greeting" id="county-title"></div>
+            <div class="avatar"></div>
+        </header>
+
+        <div class="county-container">
+
+            <!-- SCORE GRID -->
+            <div class="county-score-card">
+                <div class="score-item">
+                    <label>Sentiment Score</label>
+                    <span id="sentiment-score">--</span>
+                </div>
+
+                <div class="score-item">
+                    <label>Network Score</label>
+                    <span id="network-score">--</span>
+                </div>
+
+                <div class="score-item">
+                    <label>Reddit Score</label>
+                    <span id="reddit-score">--</span>
+                </div>
+
+                <div class="score-item highlight">
+                    <label>Total Happiness Score</label>
+                    <span id="happiness-score">--</span>
+                </div>
+            </div>
+
+            <!-- CLUSTER LABEL -->
+            <div class="cluster-box" id="cluster-box">Loading...</div>
+
+            <!-- RECOMMENDATION -->
+            <div class="recommendation-box">
+                <h2>Recommendation</h2>
+                <p id="recommendation-text">Loading suggestion...</p>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+
+<script>
+// Parse county from URL
+const urlParams = new URLSearchParams(window.location.search);
+const countyName = urlParams.get("county");
+document.getElementById("county-title").textContent = countyName;
+
+// Fetch CSV + extract correct row
+fetch("county_happiness_with_reddit_feedback_normalized.csv")
+.then(response => response.text())
+.then(csv => {
+
+    // Split rows & skip header
+    const rows = csv.trim().split("\n").slice(1);
+
+    // Match row using left part of countyName (removes " County")
+    const match = rows.find(row => row.toLowerCase().startsWith(countyName.replace(" County","").toLowerCase()));
+
+    if (!match) {
+        alert("County data not found.");
+        return;
+    }
+
+    // Proper CSV parsing that handles quotes
+    const parts = match.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g).map(p => p.replace(/^"|"$/g,"").trim());
+
+    const sentiment = parseFloat(parts[1]);
+    const network = parseFloat(parts[2]);
+    const reddit = parseFloat(parts[3]);
+    const happiness = parseFloat(parts[4]);
+    const label = parts[6]; // <-- CSV-provided happiness label
+    const recommendation = parts[7];
+
+    // Fill UI values
+    document.getElementById("sentiment-score").textContent = sentiment.toFixed(2);
+    document.getElementById("network-score").textContent = network.toFixed(2);
+    document.getElementById("reddit-score").textContent = reddit.toFixed(2);
+    document.getElementById("happiness-score").textContent = happiness.toFixed(2);
+
+    // Set cluster label text + color class
+    const clusterDiv = document.getElementById("cluster-box");
+    clusterDiv.textContent = label;
+
+    const labelClassMap = {
+        "Low Happiness": "low",
+        "Moderate Happiness": "moderate",
+        "Positive Happiness": "positive",
+        "High Happiness": "excellent"
+    };
+
+    clusterDiv.className = "cluster-box"; // reset classes
+    clusterDiv.classList.add(labelClassMap[label] || "moderate");
+
+    // Recommendation
+    document.getElementById("recommendation-text").textContent = recommendation;
+});
+</script>
+
+</body>
+</html>
